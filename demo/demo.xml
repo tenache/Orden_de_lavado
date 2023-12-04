@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+
+      <record id="locura0" model="tenache89.locurajuvenil">
+        <field name="name">Locura mayor</field>
+        <field name="customer">Locura menor</field>
+        <field name="date">2020-01-01 00:00:00</field>
+        <field name="type">P</field>
+        <field name="done">True</field>
+      </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_tenache89_laundry_order_form" model="ir.ui.view">
+      <field name="name">view.tenache89.laundry.order.form</field>
+      <field name="model">tenache89.laundry.order</field>
+      <field name="arch" type="xml">
+        <form string="Orden de lavado">
+          <sheet>
+            <group>
+              <field name="reference_number"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_tenache89_laundry_order_tree" model="ir.ui.view">
+      <field name="name">tenache89.laundry.order.tree</field>
+      <field name="model">tenache89.laundry.order</field>
+      <field name="arch" type="xml">
+        <tree string="Orden de lavado">
+          <field name="reference_number"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_tenache89_laundry_order">
+      <field name="name">Laundry Order</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">tenache89.laundry.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_tenache89_laundry_order_tree"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Crea una orden de lavado nueva
+        </p><p>
+          Define una order de lavado con sus clientes, items de ropa, etc. 
+        </p>
+      </field>
+
+    </record>
+
+
+    <menuitem
+      id="menu_tenache89_laundry_order"
+      name="Orden de lavado"
+      sequence="20"/>
+    <menuitem
+      id="submenu_tenache89_laundry_order"
+      parent="menu_tenache89_laundry_order"
+      sequence="2"
+      action="action_tenache89_laundry_order"/>
+  </data>
+</odoo>

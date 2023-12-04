@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report 
+            string="Informe visita"
+            id="tenache89_locurajuvenil_report"
+            model="tenache89.locurajuvenil"
+            report_type="qweb-pdf"
+            name="tenache89.report_locurajuvenil_card"
+            file="tenache89.report_locurajuvenil_card"
+            attachment_use="True"
+            />
+    </data>
+</odoo>
