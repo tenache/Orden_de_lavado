@@ -50,7 +50,7 @@
         <tree string="Orden de lavado">
           <field name="partner"/>
           <field name="a_nombre"/>
-          <field name="reference_number"/>
+          <!-- <field name="reference_number"/> -->
           <field name="delivered" invisible="1"/>
 
           <button

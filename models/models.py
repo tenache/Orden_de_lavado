@@ -46,21 +46,26 @@ class ClothesItem(models.Model):
 class LaundryOrder(models.Model):
     _name = 'tenache89.laundry.order'
     _description = 'Laundry Order'
-    
-    reference_number = fields.Integer('Numero De Referencia',) # TODO: creo que hay que sacar este numero de referencia. No creo que sirva
+
     clothes_item_ids = fields.One2many(comodel_name='tenache89.clothes.item', inverse_name='laundry_order_id')
-    partner = fields.Many2one(comodel_name='res.partner') # res.partner se crea en contactos
+    partner = fields.Many2one(comodel_name='res.partner')
     partner_name = fields.Char(related="partner.name")
     a_nombre = fields.Char()
     delivered = fields.Boolean()
     place_id = fields.Many2one(comodel_name="tenache89.clothes.places")
     place_name = fields.Char(related="place_id.place")
     place_occupied = fields.Boolean(related="place_id.occupied")
+    
+    def place_occupy(self):
+        place_occupied = True 
+    
+    def place_vacate(self):
+        place_occupied = False
         
     def deliver(self):
         if self.delivered:
             self.delivered = False
-# TODO: ver si esto funciona bien
+        # TODO: ver si esto funciona bien
         else:
             self.delivered = True
             for item in self.clothes_item_ids:
@@ -79,7 +84,6 @@ class ClothesColor(models.Model):
     _rec_name = "color"
     
     color = fields.Char()
-
     
 class ClothesBrand(models.Model):
     _name = 'tenache89.clothes.brands'
@@ -104,10 +108,6 @@ class clothesPlace(models.Model):
     place = fields.Char()
     occupied = fields.Boolean()
     
-    
-
-
-
 ## TODO: search de todas las ordenes sin entregar y buscar si tienen todas las mismas caracteristicas (id).  
 ## TODO: esto ya esta hecho, basicamente. Hay que corroborar que todo funcione como se espera ... 
 ## TODO: Agregar en el general, la estanteria donde se tendria que guardar ... Hacerlo opcional, xq ya los conocemos ...
