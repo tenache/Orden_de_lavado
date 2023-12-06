@@ -8,7 +8,7 @@
         <form string="Orden de lavado">
           <!-- <sheet> NO BORRAR POR LAS DUDAS -->
             <group>
-              <field name="place_id" string="Guardado"/>
+              <field name="place_id" domain="[('occupied','=', False)]" string="Guardado en:"/>
               <field name="partner" string="Cliente" required="1"/>
               <field name="partner_name" invisible="1"/>
               <field name="a_nombre" attrs="{'invisible':[('partner_name','!=','Consumidor Final Anónimo')]}"/>

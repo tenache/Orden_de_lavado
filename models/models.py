@@ -1,10 +1,13 @@
  # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _ # _ is for translations
+from odoo import models, fields, api, _, exceptions # _ is for translations
 from odoo.exceptions import UserError
 import datetime
 
-
+class SimilarItemWizard(models.TransientModel):
+    _name = 'similar.item.wizard'
+    _description = 'Similar Item Wizard'
+    
 class ClothesItem(models.Model):
     _name ='tenache89.clothes.item'
     _description = 'Clothes Item'
@@ -34,11 +37,10 @@ class ClothesItem(models.Model):
                 ("clothes_sizes",'=',self.clothes_sizes.id),
                 ("found",'=',False),
             ])
-        # TODO: fijarse si esto esta bien o esta mal ... probarlo
-            if not similar_items:
+            if not similar_items:                
                 print("Different clothes type")
             else:
-                print("Same clothes type")
+                raise exceptions.Warning("Cuidado: Hay Items con caracteristicas similares \n Por favor llene la descripcion")
                 # TODO:esto deberia printear un warning que diga: hay un item con las mismas caracteristicas.
                 ## supongo que deberia ser un widget o algo asi? wizard? no se como se dice ...  
                 # TODO: intentar hacer la Descripcion obligatoria si es que encuentra una prenda igual ...
@@ -56,20 +58,30 @@ class LaundryOrder(models.Model):
     place_name = fields.Char(related="place_id.place")
     place_occupied = fields.Boolean(related="place_id.occupied")
     
-    def place_occupy(self):
-        place_occupied = True 
+    @api.model
+    def create(self, vals):
+        record_ = super(LaundryOrder, self).create(vals)
+        place = self.env["tenache89.clothes.places"].search([('id', '=', vals['place_id'])])
+        place.occupied = True
+        return record_
     
-    def place_vacate(self):
-        place_occupied = False
+    def write(self, vals):
+        record = super(LaundryOrder, self).write(vals)
+        # search last = True. Cambialo por false
+        self.place_id.occupied = True
         
+        print("holaaaa")
+        return record
+      
     def deliver(self):
         if self.delivered:
             self.delivered = False
-        # TODO: ver si esto funciona bien
+            self.place_id.occupied = True
         else:
             self.delivered = True
+            self.place_id.occupied = False
             for item in self.clothes_item_ids:
-                item.found = True
+                item.found = False
 
 class ClothesType(models.Model):
     _name='tenache89.clothes.types'
@@ -98,19 +110,17 @@ class ClothesSize(models.Model):
     _rec_name = "size"
     
     size = fields.Char()
-    # hacer algun inverso sera necesario?? 
     
 class clothesPlace(models.Model):
     _name = 'tenache89.clothes.places'
     _description = "clothes place"
     _rec_name = "place"
-    
+        
     place = fields.Char()
     occupied = fields.Boolean()
-    
-## TODO: search de todas las ordenes sin entregar y buscar si tienen todas las mismas caracteristicas (id).  
-## TODO: esto ya esta hecho, basicamente. Hay que corroborar que todo funcione como se espera ... 
-## TODO: Agregar en el general, la estanteria donde se tendria que guardar ... Hacerlo opcional, xq ya los conocemos ...
-## TODO: poner nombre de cliente si tiene, y solo "a nombre" cuando no haya un cliente ... 
-## que mas falta?? 
-## TODO: hacer un github 
+
+# drugs won't make up for the gap genetics create
+# PED is rampant in female users... 
+# 15 more minutes ... 
+
+## TODO: Agregar funcion desde views_try para poner verdader-falso el ocupado o no ocupado ... 
