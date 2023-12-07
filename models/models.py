@@ -4,6 +4,23 @@ from odoo import models, fields, api, _, exceptions # _ is for translations
 from odoo.exceptions import UserError
 import datetime
 
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    
+    laundry_order_id = fields.Many2one(comodel_name='tenache89.laundry.order')
+    
+class clothesCategory(models.Model):
+    _name = 'tenache89.clothes.category'
+    
+    clothes_item_ids = fields.Many2one(comodel_name='tenache89.clothes.item', inverse_name='clothes_category_id')
+    
+    price = fields.Float()
+    
+class priceRule(models.Model):
+    _name = 'tenache89.'
+    
+    
+
 class SimilarItemWizard(models.TransientModel):
     _name = 'similar.item.wizard'
     _description = 'Similar Item Wizard'
@@ -19,7 +36,8 @@ class ClothesItem(models.Model):
     clothes_sizes = fields.Many2one(comodel_name='tenache89.clothes.sizes')
     description = fields.Text()
     found = fields.Boolean(default=False)
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
+    clothes_category_id = fields.One2many(comodel_name='tenache89.clothes.category')
     
     def clothes_found(self):
         if self.found:
@@ -47,7 +65,8 @@ class ClothesItem(models.Model):
     #             # TODO: intentar hacer la Descripcion obligatoria si es que encuentra una prenda igual ...
        
 class LaundryOrder(models.Model):
-    _name = 'tenache89.laundry.order'
+    _inherit = "sale.order"
+    # _name = 'tenache89.laundry.order'
     _description = 'Laundry Order'
 
     clothes_item_ids = fields.One2many(comodel_name='tenache89.clothes.item', inverse_name='laundry_order_id')
@@ -58,30 +77,43 @@ class LaundryOrder(models.Model):
     place_id = fields.Many2one(comodel_name="tenache89.clothes.places")
     place_name = fields.Char(related="place_id.place")
     place_occupied = fields.Boolean(related="place_id.occupied")
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     
+        
     @api.model
     def create(self, vals):
         similar_items = self.find_similar_item(vals)
         if similar_items:
-            raise UserError("Hay otra prenda igual \n Tienes que agregar una descripcion")
+            raise UserError(_("Hay otra prenda igual \n Tienes que agregar una descripcion"))
         record_ = super(LaundryOrder, self).create(vals)
         place = self.env["tenache89.clothes.places"].search([('id', '=', vals['place_id'])])
         place.occupied = True
 
         return record_
     
+    # @api.multi
     def write(self, vals):
+        if 'active' in vals and not vals['active']:
+            for item in self.clothes_item_ids:
+                item.write({'active':False})
+        similar_items = self.find_similar_item(vals)
+        
+        if similar_items:
+            raise UserError(_("Hay otra prenda igual \n Tienes que agregar una descripcion"))
+        
         record = super(LaundryOrder, self).write(vals)
         # search last = True. Cambialo por false
         self.place_id.occupied = True
-        
-        print("holaaaa")
         return record
     
     def find_similar_item(self, vals):
         all_similar_items = []
-        clothes_item_ids = [item_id[2] for item_id in vals['clothes_item_ids']]
+        clothes_item_ids = []
+        if 'clothes_item_ids' in vals:
+            for item_id in vals['clothes_item_ids']:
+                if type(item_id[2]) == dict:
+                    clothes_item_ids.append(item_id[2])
+  
         for clothes_item in clothes_item_ids:
             if clothes_item['clothes_types']:
                 items_env = self.env['tenache89.clothes.item']
