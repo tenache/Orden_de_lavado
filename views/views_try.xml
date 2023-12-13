@@ -4,8 +4,8 @@
   XPATH -->
   <data>
     <record id="view_tenache89_laundry_order_form" model="ir.ui.view">
-      <field name="name">view.tenache89.laundry.order.form</field>
-      <field name="model">tenache89.laundry.order</field>
+      <field name="name">view.sale.order.form</field>
+      <field name="model">sale.order</field>
       <field name="arch" type="xml">
         <form string="Orden de lavado">
           <!-- <sheet> NO BORRAR POR LAS DUDAS -->
@@ -45,9 +45,9 @@
       </field>
     </record>
 
-    <record id="view_tenache89_laundry_order_tree" model="ir.ui.view">
-      <field name="name">tenache89.laundry.order.tree</field>
-      <field name="model">tenache89.laundry.order</field>
+    <record id="view_tenache89_sale_order_tree" model="ir.ui.view">
+      <field name="name">sale.order.tree</field>
+      <field name="model">sale.order</field>
       <field name="arch" type="xml">
         <tree string="Orden de lavado">
           <field name="partner"/>
@@ -79,9 +79,9 @@
       
       <field name="name">Laundry Order</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">tenache89.laundry.order</field>
+      <field name="res_model">sale.order</field>
       <field name="view_mode">tree,form</field>
-      <field name="view_id" ref="view_tenache89_laundry_order_tree"/>
+      <field name="view_id" ref="view_tenache89_sale_order_tree"/>
       <field name="help" type="html">
         
         <p class="o_view_nocontent_smiling_face">

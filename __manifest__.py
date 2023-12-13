@@ -26,10 +26,12 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/views_try.xml',
-        'views/views_storage.xml',
+        # 'views/views_try.xml',
+        # 'views/views_storage.xml',
+        'views/views_sale_order.xml'
         # 'views/views.xml',
         # 'views/templates.xml',
         # 'reports/visit.xml'
     ],
+    'application': True
 }

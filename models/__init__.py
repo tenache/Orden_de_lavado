@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import models, sale_order_inherit
+from . import models, sale_order_inherit, sale_order_line_inherit
