@@ -38,6 +38,7 @@ class ClothesItem(models.Model):
     found = fields.Boolean(default=False)
     active = fields.Boolean(default=True)
     clothes_category_id = fields.One2many(comodel_name='tenache89.clothes.category', inverse_name='clothes_item_ids')
+    clothes_product_id = fields.Many2one(comodel_name='product.product')
     
     def clothes_found(self):
         if self.found:
@@ -60,7 +61,7 @@ class ClothesItem(models.Model):
     #             print("Different clothes type")
     #         else:
     #             raise exceptions.Warning("Cuidado: Hay Items con caracteristicas similares \n Por favor llene la descripcion")
-    #             # TODO: intentar hacer la Descripcion obligatoria si es que encuentra una prenda igual ...
+    #           
        
 # class LaundryOrder(models.Model):
 #     _inherit = "sale.order.line"
@@ -173,8 +174,11 @@ class clothesPlace(models.Model):
     place = fields.Char()
     occupied = fields.Boolean()
 
-# drugs won't make up for the gap genetics create
-# PED is rampant in female users... 
-# 15 more minutes ... 
 
-## TODO: Agregar funcion desde views_try para poner verdader-falso el ocupado o no ocupado ... 
+## TODO: hay que hacer una funcion que haga obligatoria la descripcion del producto
+## o al menos que salga un cartel pidiendo descripcion ... 
+## TODO: hay que hacer un link entre el tipo de ropa y los productos. Asi cada tipo de ropa tiene un solo "producto" (ropa interior, etc.)
+
+## TODO: hay que reincorporar esto de que aparezca el "a nombre de" cuando es consumidor final anonimo ... 
+## Para eso hay que modificar el sale.order inherit
+

@@ -3,13 +3,54 @@
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
+        <!-- <field name="mandatory_description" invisible="1"/> -->
+        
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
-                <field name="clothes_types" string="Tipo de ropa"/>
+                <!-- <field name="clothes_product_id"/> -->
+                <field name="mandatory_description" invisible="1"/>
+                <field name="clothes_types" string="Tipo de ropa" required="1" />
+                <field name="clothes_colors" string="Color"/>
+                 <!-- domain="product_id" -->
                 <field name="clothes_brands" string="Marca de ropa"/>
                 <field name="clothes_sizes" string="Talle"/>
-                <field name="found" string="Listo"/> 
+                <field name="found" string="OK"/>
+                <!-- <field name="taxes" string="IVA"/> -->
+                <field name="clothes_description" string="Descripción aquí" attrs="{'required':[('mandatory_description','=', True)]}"/>
+                <!-- domain=campo relacional -->
             </xpath>
+
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_subtotal']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
         </field>
     </record>
+    <!-- <record id= "sale_order_line_view_form_readonly_inherit" model="ir.ui.view">
+        <field name="name">sale.order.line.form.inherit</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.sale_order_line_view_form_readonly"/>
+
+        <field name="arch" type="xml">
+
+        </field>
+    </record> -->
+
 </odoo>
+
+
+<!-- TODO: Hay que arreglar la vista: sacar impuesto, precio unitario e incluso subtotal  -->
