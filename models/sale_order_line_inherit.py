@@ -8,7 +8,7 @@ class SaleOrderLineLaundryInherit(models.Model):
     # algun dia para hacer mas simple la vista, sacar la columna impuestos tal como esta y poner una booleana, ya 
     # que casi siempre es IVA
     # taxes = fields.Boolean(default=False)
-    clothes_item_ids = fields.One2many(comodel_name='tenache89.clothes.item', inverse_name='laundry_order_id')
+    # clothes_item_ids = fields.One2many(comodel_name='tenache89.clothes.item', inverse_name='laundry_order_id')
     clothes_types = fields.Many2one(comodel_name='tenache89.clothes.types')
     clothes_brands = fields.Many2one(comodel_name='tenache89.clothes.brands')
     clothes_sizes = fields.Many2one(comodel_name='tenache89.clothes.sizes')
@@ -22,7 +22,7 @@ class SaleOrderLineLaundryInherit(models.Model):
 
     @api.model
     def create(self, vals):
-        similar_items = self.find_similar_item(vals)
+        similar_items = self.find_similar_item()
         vals['mandatory_description'] = bool(similar_items)
         # if similar_items:
         #     raise UserError(_("Hay otra prenda igual \n Tienes que agregar una descripcion"))
@@ -36,11 +36,11 @@ class SaleOrderLineLaundryInherit(models.Model):
         if 'active' in vals and not vals['active']:
             for item in self.clothes_item_ids:
                 item.write({'active':False})
-        similar_items = self.find_similar_item(vals)
+        similar_items = self.find_similar_item()
         vals['mandatory_description'] = not bool(similar_items)
         
-        # if similar_items:
-        #     raise UserError(_("Hay otra prenda igual \n Tienes que agregar una descripcion"))
+        if similar_items:
+            raise UserError(_("Hay otra prenda igual \n Tienes que agregar una descripcion"))
         
         record = super(SaleOrderLineLaundryInherit, self).write(vals)
         # search last = True. Cambialo por false
@@ -81,16 +81,6 @@ class SaleOrderLineLaundryInherit(models.Model):
         else:
             return False
                     
-                    
-        # if self.clothes_types:
-        #     items_env = self.env['tenache89.clothes.item']
-        #     similar_items = items_env.search(domain_filter)
-        #     print('hello3')
-
-        # if similar_items:
-        #         all_similar_items.extend(similar_items)
-        #         print('hello')
-        # return all_similar_items
     
     @api.onchange('clothes_types', 'clothes_brands', 'clothes_sizes', 'clothes_colors')
     def _onchange_clothes_fields(self):
@@ -99,7 +89,7 @@ class SaleOrderLineLaundryInherit(models.Model):
             self.mandatory_description = bool(similar_items)  
             print('hello')
             print('hello2')
-    
- 
-
-    
+            
+    @api.onchange('clothes_product_id')
+    def _onchange_product(self):
+        return{'domain': {'clothes_types': [('product_id', '=', self.clothes_product_id.id)]}}

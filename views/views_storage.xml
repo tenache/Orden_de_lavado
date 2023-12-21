@@ -47,8 +47,8 @@
 
     <menuitem
       id="submenu_tenache89_clothes_storage"
-      parent="orden_de_lavado_root"
-      sequence="3"
+      parent="sale.sale_menu_root"
+      sequence="20"
       action="action_tenache89_clothes_storage"/>
 
 </odoo>

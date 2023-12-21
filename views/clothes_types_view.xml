@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tenache89_clothes_types_view_form" model="ir.ui.view">
+        <field name="name">tenache89.clothes.types.form</field>
+        <field name="model">tenache89.clothes.types</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de ropa">
+                <sheet>
+                    <group>
+                        <field name="tipo"/>
+                        <field 
+                            name="product_id"
+                            widget="many2one_barcode"
+                            force_save="1"
+                            string="categoria de ropa"
+                            required="1"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tenache89_clothes_types_view_tree" model="ir.ui.view">
+        <field name="name">tenache89.clothes.types.tree</field>
+        <field name="model">tenache89.clothes.types</field>
+        <field name="arch" type="xml">
+            <tree string="Tipos de ropa">
+                <field name="tipo"></field>
+                <field name="product_id_name"></field>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_tenache89_clothes_types">
+        <field name="name">Tipo de ropa</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tenache89.clothes.types</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tenache89_clothes_types_view_tree"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Mira tus tipos de ropa
+                </p><p>
+             Aca tenemos todos los tipos de ropa
+            </p>
+          </field>
+    </record>
+    
+    <menuitem
+      id="submenu_tenache89_clothes_types"
+      parent="sale.sale_menu_root"
+      sequence="21"
+      action="action_tenache89_clothes_types"/>
+
+</odoo>
