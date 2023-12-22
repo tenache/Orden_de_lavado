@@ -6,15 +6,31 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_quotation_tree"></field>
         <field name="arch" type="xml">
-            <xpath expr="//tree/field[@name='state']" position="replace">
+            <!-- <xpath expr="//field[@name='name']" position="after">
+                <button name="change_state" type="object" string="cambiar estado" class="oe-highlight"/>
+            </xpath> -->
+            <xpath expr="//tree/field[@name='partner_id']" position="after">
                 <field 
-                    name="state_display"
-                    string="estado"
-                    decoration-success="state_display == 'Por entregar' or state_display == 'Entregado'"
-                    decoration-info="state_display == 'Por lavar' or state_display == 'sent'"
+                    name="display_state"
+                    string="Estado"
+                    decoration-success="display_state == 'Por entregar' or display_state == 'Entregado'"
+                    decoration-info="display_state == 'Por lavar' or display_state == 'Por planchar'"
                     widget="badge"
                     optional="show"
-                />                
+                />
+            </xpath> 
+            <xpath expr="//tree/field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>            
+            <xpath expr="//tree/field[@name='activity_ids']" position="after">
+                <field name="place_id"/> 
+                            
+            </xpath>
+            <xpath expr="//tree/field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>

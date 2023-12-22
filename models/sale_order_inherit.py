@@ -6,15 +6,36 @@ class SaleOrderLaundryInherit(models.Model):
     
     place_id = fields.Many2one(comodel_name="tenache89.clothes.places")
     
-    state_display = fields.Char(compute='_compute_state_display')
+    ironing = fields.Boolean(default=False)
     
-    def _compute_state_display(self):
-        for record in self:
-            if record.state == 'draft':
-                record.state_display = 'Por lavar'
-            elif record.state == 'sale':
-                record.state_display = 'Por entregar'
-            elif record.state == 'done':
-                record.state_display = 'Entregado'
+    display_state = fields.Selection([
+        ('Por lavar','Por lavar'),
+        ('Por planchar','Por planchar'),
+        ('Por retirar','Por retirar'),
+        ('Retirado','Retirado'),
+        ], string="Estado", default='Por lavar')
+
+    
+    def change_state(self):
+        if self.display_state == 'Por lavar':
+            if self.ironing:
+                self.display_state = 'Por planchar'
             else:
-                record.state_display = record.state
+                self.display_state = 'Por retirar'
+        elif self.display_state == 'Por planchar':
+            self.display_state = 'Por retirar'
+        else:
+            self.display_state = 'Retirado'
+            
+    def reverse_state(self):
+        if self.display_state == 'Retirado':
+            self.display_state = 'Por retirar'
+        elif self.display_state == 'Por retirar':
+            if self.ironing:
+                self.display_state = 'Por planchar'
+            else:
+                self.display_state = 'Por lavar'
+        else:
+            self.display_state = 'Por lavar'
+        
+

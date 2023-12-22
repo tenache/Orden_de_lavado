@@ -4,8 +4,23 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <!-- <field name="mandatory_description" invisible="1"/> -->
-        
         <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_cancel']" position="after">
+                <button name="reverse_state" type="object" class="btn btn-warning" string="Etapa anterior"/>
+                <button name="change_state" type="object" class="btn btn-info" string="Proxima etapa"/>
+            </xpath>
+            <xpath expr="//form/sheet/group[@name='sale_header']/group[@name='partner_details']/field[@name='partner_id']" position="after">
+                <field name="place_id" string="Lugar"/>
+                <field name="ironing" string="Con planchado"/>
+                <field 
+                name="display_state"
+                string="Estado"
+                decoration-success="display_state == 'Por Entregar' or display_state == 'Entregado'"
+                decoration-info="display_state == 'Por lavar' or display_state == 'Por planchar'"
+                widget="badge"
+                optional="show"
+            />
+            </xpath>
             <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
                 <!-- <field name="clothes_product_id"/> -->
                 <field name="mandatory_description" invisible="1"/>
