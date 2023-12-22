@@ -30,7 +30,8 @@
         # 'views/views_try.xml',
         'views/clothes_types_view.xml',
         'views/views_storage.xml',
-        'views/views_sale_order.xml'
+        'views/views_sale_order.xml',
+        'views/new_file_view.xml',
         # 'views/views.xml',
         # 'views/templates.xml',
         # 'reports/visit.xml'

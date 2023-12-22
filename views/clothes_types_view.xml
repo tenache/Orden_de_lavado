@@ -8,12 +8,11 @@
                 <sheet>
                     <group>
                         <field name="tipo"/>
-                        <field 
-                            name="product_id"
-                            widget="many2one_barcode"
-                            force_save="1"
-                            string="categoria de ropa"
-                            required="1"
+                        <field name="product_id"
+                        widget ="many2one_barcode"
+                        string="categoria de ropa"
+                        force_save="1"
+                        required="1"
                         />
                     </group>
                 </sheet>
@@ -27,7 +26,7 @@
         <field name="arch" type="xml">
             <tree string="Tipos de ropa">
                 <field name="tipo"></field>
-                <field name="product_id_name"></field>
+                <field name="product_id_name" string="categoria de ropa"></field>
             </tree>
         </field>
     </record>

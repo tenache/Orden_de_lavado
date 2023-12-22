@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_quotation_tree_iherit" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='state']" position="replace">
+                <field 
+                    name="state_display"
+                    string="estado"
+                    decoration-success="state_display == 'Por entregar' or state_display == 'Entregado'"
+                    decoration-info="state_display == 'Por lavar' or state_display == 'sent'"
+                    widget="badge"
+                    optional="show"
+                />                
+            </xpath>
+        </field>
+    </record>
+</odoo>

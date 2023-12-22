@@ -9,14 +9,23 @@ class ProductProduct(models.Model):
     
     clothes_types_id = fields.Many2one(comodel_name='tenache89.clothes.types')
     
+   
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
     new_field = fields.Char()
-    clothes_type_id_template = fields.Many2one(comodel_name='tenache89.clothes.types')
+    clothes_type_id_template = fields.One2many(comodel_name='tenache89.clothes.types', inverse_name='product_id')
     clothes_type_id_string = fields.Char(related='clothes_type_id_template.tipo')
+    
+class ClothesType(models.Model):
+    _name='tenache89.clothes.types'
+    _description = "type of clothes (i.e. shirt, skirt, etc.)"
+    _rec_name = "tipo"
+    
+    tipo = fields.Char()
+    product_id = fields.Many2one(comodel_name="product.template")
+    product_id_name = fields.Char(related="product_id.name")
 
-  
 class ClothesItem(models.Model):
     _name ='tenache89.clothes.item'
     _description = 'Clothes Item'
@@ -37,18 +46,6 @@ class ClothesItem(models.Model):
         else:
             self.found = True
             
-
-
-class ClothesType(models.Model):
-    _name='tenache89.clothes.types'
-    _description = "type of clothes (i.e. shirt, skirt, etc.)"
-    _rec_name = "tipo"
-    
-    tipo = fields.Char()
-    product_id = fields.One2many(comodel_name="product.product", inverse_name='clothes_types_id')
-    product_id_name = fields.Char(related="product_id.name")
-    
-    
 class ClothesColor(models.Model):
     _name = 'tenache89.clothes.colors'
     _description = "clothes color"
