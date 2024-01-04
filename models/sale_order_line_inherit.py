@@ -18,7 +18,8 @@ class SaleOrderLineLaundryInherit(models.Model):
     
     mandatory_description = fields.Boolean(default=True)
     
-
+    product_template_id_id= fields.Integer(related="product_template_id.id")
+    print('hello')
 
     @api.model
     def create(self, vals):

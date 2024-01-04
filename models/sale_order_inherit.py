@@ -4,6 +4,9 @@ class SaleOrderLaundryInherit(models.Model):
     _inherit = 'sale.order'
     _description = 'DESC AQUI'
     
+    clothes_product = fields.Many2one(comodel_name="product.template")
+    clothes_product_id = fields.Integer(related="clothes_product.id")
+    
     place_id = fields.Many2one(comodel_name="tenache89.clothes.places")
     
     ironing = fields.Boolean(default=False)
